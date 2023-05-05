@@ -28,6 +28,13 @@ class ToDo(db.Model):
     due_date = db.Column(db.String(100), nullable=True)
     status = db.Column(db.String(100), nullable=False)
 
+    def __repr__(self):
+        return '<ToDo %r>' % self.title
+
+# Setup create a new DB and Tables
+# with app.app_context():
+#     db.create_all()
+
 
 class CreateToDoForm(FlaskForm):
     # WTForm
@@ -49,8 +56,8 @@ def show_todo():
     return render_template("todo.html", todo=requested_todo)
 
 
-@app.route("/new-todo", methods=['GET', 'POST'])
-def new_todo():
+@app.route("/add_todo", methods=['GET', 'POST'])
+def add_todo():
     form = CreateToDoForm()
     if form.validate_on_submit():
         print("Validated 👌")
