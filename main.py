@@ -1,16 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateTimeField, SubmitField
 from wtforms.validators import DataRequired
 from flask_ckeditor import CKEditor, CKEditorField
+from flask_bootstrap import Bootstrap5
 import datetime
 
 # SETUP APP
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
-Bootstrap(app)
+ckeditor = CKEditor(app)
+bootstrap = Bootstrap5(app)
 
 # CREATE DB
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos.db'
