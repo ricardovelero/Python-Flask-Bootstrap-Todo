@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateTimeField, SubmitField
+from wtforms import StringField, DateTimeLocalField, SubmitField
 from wtforms.validators import DataRequired
 from flask_ckeditor import CKEditor, CKEditorField
 from flask_bootstrap import Bootstrap5
@@ -25,8 +25,8 @@ class ToDo(db.Model):
     title = db.Column(db.String(250), unique=True, nullable=False)
     body = db.Column(db.String(500), nullable=True)
     date = db.Column(db.String(100), nullable=True)
-    due_date = db.Column(db.String(100), nullable=True)
-    status = db.Column(db.String(100), nullable=False)
+    # due_date = db.Column(db.String(100), nullable=True)
+    status = db.Column(db.String(100), default='To Do', nullable=False)
 
     def __repr__(self):
         return '<ToDo %r>' % self.title
@@ -38,9 +38,9 @@ class ToDo(db.Model):
 
 class CreateToDoForm(FlaskForm):
     # WTForm
-    title = StringField("To Do", validators=[DataRequired()])
+    title = StringField("Name", validators=[DataRequired()])
     body = CKEditorField("Description", validators=[DataRequired()])
-    due_date = DateTimeField("Due Date")
+    # due_date = DateTimeLocalField("Due Date")
     submit = SubmitField("Save")
 
 
@@ -51,7 +51,7 @@ def home():
 
 
 @app.route('/todo/<int:id>')
-def show_todo():
+def show_todo(id):
     requested_todo = ToDo.query.get(id)
     return render_template("todo.html", todo=requested_todo)
 
@@ -64,8 +64,8 @@ def add_todo():
         new_todo = ToDo(
             title=form.title.data,
             body=form.body.data,
-            due_date=form.due_date.data,
-            status=form.status.data,
+            # due_date=form.due_date.data,
+            # status=form.status.data,
             date=datetime.datetime.now().strftime("%B %d, %Y")
         )
         db.session.add(new_todo)
@@ -74,7 +74,7 @@ def add_todo():
     return render_template("make-todo.html", form=form)
 
 
-@app.route("/edit-todo/<int:id>", methods=['GET', 'POST'])
+@app.route("/edit_todo/<int:id>", methods=['GET', 'POST'])
 def edit_todo(id):
     todo = ToDo.query.get(id)
     form = CreateToDoForm(obj=todo)
