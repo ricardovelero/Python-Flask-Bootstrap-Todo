@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>To Do List Application</h1>
-<p>This demo uses Python Flask, SQLAlchemy, Bootstrap 5.</p>
+<div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+        <h1>{{ todo.title }}</h1>
+        <p>{{ todo.body|safe }}</p>
+        <span>Created date: {{todo.date}}</span>
+    </div>
+</div>
 
 {% endblock %}

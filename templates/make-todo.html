@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
-{% from 'bootstrap5/form.html' import render_form, render_field, render_form_row %}
+{% from 'bootstrap5/form.html' import render_form %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-            <h1>
-                {% if todo %}
-                Edit ToDo
-                {% else %}
-                New ToDo
-                {% endif %}
-            </h1>
-            {{ ckeditor.load() }}
-            {{ render_form(form, button_map={'submit':'primary'}) }}
-        </div>
+
+<div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+        <h1 class="text-center">
+            {% if todo %}
+            Edit ToDo
+            {% else %}
+            New ToDo
+            {% endif %}
+        </h1>
+        {{ ckeditor.load() }}
+        {{ render_form(form, button_map={'submit':'primary'}) }}
     </div>
 </div>
+
 
 {% endblock %}
