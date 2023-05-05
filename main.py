@@ -80,17 +80,17 @@ def edit_todo(id):
     form = CreateToDoForm(obj=todo)
     if form.validate_on_submit():
         print("Validated 👌")
-        todo.title = form.title.data,
-        todo.body = form.body.data,
-        todo.due_date = form.due_date.data,
-        todo.status = form.status.data,
+        todo.title = form.title.data
+        todo.body = form.body.data
+        # todo.due_date = form.due_date.data
+        # todo.status = form.status.data
         db.session.commit()
         return redirect(url_for('home'))
-    return render_template("make-todo.html", form=form)
+    return render_template("make-todo.html", form=form, todo=todo)
 
 
 @app.route("/delete/<int:id>")
-def delete_post(id):
+def delete_todo(id):
     todo = ToDo.query.get(id)
     db.session.delete(todo)
     db.session.commit()

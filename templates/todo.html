@@ -5,7 +5,12 @@
     <div class="col-lg-8 col-md-10 mx-auto">
         <h1>{{ todo.title }}</h1>
         <p>{{ todo.body|safe }}</p>
-        <span>Created date: {{todo.date}}</span>
+        <p>Created date: {{todo.date}}</p>
+        <a 
+        href="{{ url_for('edit_todo', id=todo.id) }}"
+        class="btn btn-primary"
+        >Edit ToDo
+        </a>
     </div>
 </div>
 

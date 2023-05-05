@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto">
         <h1 class="text-center">
-            {% if todo %}
+            {% if todo: %}
             Edit ToDo
             {% else %}
             New ToDo
@@ -14,6 +14,9 @@
         </h1>
         {{ ckeditor.load() }}
         {{ render_form(form, button_map={'submit':'primary'}) }}
+        <a href="{{ url_for('delete_todo', id=todo.id) }}"
+        class="btn btn-outline-danger mt-3"
+        >Delete</a>
     </div>
 </div>
 
