@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>To Do List Application</h1>
+<p>This demo uses Python Flask, SQLAlchemy, Bootstrap 5.</p>
+
+<div class="row">
+    <div class="col-lg-3 col-sm-1 mx-auto">
+        {% for todo in all_todos: %}
+            <div>
+                <a href="{{ url_for('show_todo', id=todo.id) }}">
+                    <h2>
+                        {{todo.title}}
+                    </h2>
+                </a>
+                <p>
+                    {{todo.body}}
+                </p>
+            </div>
+        {% endfor %}
+        <a href="{{ url_for('add_todo') }}">Add To Do</a>
+    </div>
+</div>
+
+{% endblock %}
