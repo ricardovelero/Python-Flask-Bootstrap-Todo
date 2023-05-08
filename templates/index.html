@@ -9,6 +9,7 @@
     <div class="col-md-4">
         <h2>To do</h2>
         {% for todo in all_todos: %}
+            {% if todo.status == 'todo' %}
             <div class="card" style="width: 18rem;"">
                 <div class="card-body">
                     <a href="{{ url_for('show_todo', id=todo.id) }}">
@@ -19,40 +20,56 @@
                     <p class="card-text">
                         {{todo.body|safe}}
                     </p>
-                    <a href="#" class="card-link">"Doing"</a>
-                    <a href="#" class="card-link">"Done"</a>
+                    <a href="{{ url_for('change_status', id=todo.id, status='doing')}}" class="card-link">"Doing"</a>
+                    <a href="{{ url_for('change_status', id=todo.id, status='done')}}" class="card-link">"Done"</a>
                 </div>
             </div>
+            {% endif %}
         {% endfor %}
-        <a href="{{ url_for('add_todo') }}" 
+        <a href="{{ url_for('add_todo', status='todo') }}" 
         class="mt-3 link-offset-2 link-underline link-underline-opacity-10"
         >{{ render_icon('plus') }} Add Card</a>
     </div>
     <div class="col-md-4">
         <h2>Doing</h2>
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                    content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-            </div>
-        </div>
+        {% for todo in all_todos: %}
+            {% if todo.status == 'doing' %}
+                <div class="card" style="width: 18rem;"">
+                    <div class=" card-body">
+                        <a href="{{ url_for('show_todo', id=todo.id) }}">
+                            <h5 class="card-title">{{todo.title}}</h5>
+                        </a>
+                        <p class="card-text">{{todo.body|safe}}</p>
+                        <a href="{{ url_for('change_status', id=todo.id, status='todo')}}" class="card-link">"To Do"</a>
+                        <a href="{{ url_for('change_status', id=todo.id, status='done')}}" class="card-link">"Done"</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <a href="{{ url_for('add_todo', status='doing') }}" class="mt-3 link-offset-2 link-underline link-underline-opacity-10">
+            {{ render_icon('plus') }} Add Card
+        </a>
     </div>
     <div class="col-md-4">
         <h2>Done</h2>
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                    content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-            </div>
-        </div>
+        {% for todo in all_todos: %}
+            {% if todo.status == 'done' %}
+                <div class="card" style="width: 18rem;"">
+                    <div class=" card-body">
+                        <a href="{{ url_for('show_todo', id=todo.id) }}">
+                            <h5 class="card-title">{{todo.title}}</h5>
+                        </a>
+                        <p class="card-text">{{todo.body|safe}}</p>
+                        <a href="{{ url_for('change_status', id=todo.id, status='todo')}}" class="card-link">"To Do"</a>
+                        <a href="{{ url_for('change_status', id=todo.id, status='doing')}}" class="card-link">"Doing"</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <a href="{{ url_for('add_todo', status='done') }}"
+            class="mt-3 link-offset-2 link-underline link-underline-opacity-10">
+                {{ render_icon('plus') }} Add Card
+        </a>
     </div>
 </div>
 
