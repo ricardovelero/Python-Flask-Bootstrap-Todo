@@ -5,12 +5,12 @@
 <h1>To Do List Application</h1>
 <p>This demo uses Python Flask, SQLAlchemy, Bootstrap 5.</p>
 
-<div class="row align-items-start">
+<div class="row gx-5">
     <div class="col-md-4">
-        <h2>To do</h2>
+        <h2 class="text-center">To do</h2>
         {% for todo in all_todos: %}
             {% if todo.status == 'todo' %}
-            <div class="card" style="width: 18rem;"">
+            <div class="card mb-3">
                 <div class="card-body">
                     <a href="{{ url_for('show_todo', id=todo.id) }}">
                         <h5 class="card-title">
@@ -20,8 +20,14 @@
                     <p class="card-text">
                         {{todo.body|safe}}
                     </p>
-                    <a href="{{ url_for('change_status', id=todo.id, status='doing')}}" class="card-link">"Doing"</a>
-                    <a href="{{ url_for('change_status', id=todo.id, status='done')}}" class="card-link">"Done"</a>
+                </div>
+                <div class="card-footer text-body-secondary d-flex justify-content-between">
+                        <a href="{{ url_for('change_status', id=todo.id, status='doing')}}" class="con-link icon-link-hover">
+                            Doing{{ render_icon('arrow-right') }}
+                        </a>
+                        <a href="{{ url_for('change_status', id=todo.id, status='done')}}" class="icon-link icon-link-hover">
+                            Done{{ render_icon('arrow-right') }}
+                        </a>
                 </div>
             </div>
             {% endif %}
@@ -31,17 +37,28 @@
         >{{ render_icon('plus') }} Add Card</a>
     </div>
     <div class="col-md-4">
-        <h2>Doing</h2>
+        <h2 class="text-center">Doing</h2>
         {% for todo in all_todos: %}
             {% if todo.status == 'doing' %}
-                <div class="card" style="width: 18rem;"">
+                <div class="card mb-3">
                     <div class=" card-body">
                         <a href="{{ url_for('show_todo', id=todo.id) }}">
                             <h5 class="card-title">{{todo.title}}</h5>
                         </a>
                         <p class="card-text">{{todo.body|safe}}</p>
-                        <a href="{{ url_for('change_status', id=todo.id, status='todo')}}" class="card-link">"To Do"</a>
-                        <a href="{{ url_for('change_status', id=todo.id, status='done')}}" class="card-link">"Done"</a>
+
+                    </div>
+                    <div class="card-footer text-body-secondary d-flex justify-content-between">
+                        <a href="{{ url_for('change_status', id=todo.id, status='todo')}}" 
+                            class="con-link icon-link-hover"
+                        >
+                            {{ render_icon('arrow-left') }}To do
+                        </a>
+                        <a href="{{ url_for('change_status', id=todo.id, status='done')}}" 
+                            class="icon-link icon-link-hover"
+                        >
+                            Done{{ render_icon('arrow-right') }}
+                        </a>
                     </div>
                 </div>
             {% endif %}
@@ -51,17 +68,23 @@
         </a>
     </div>
     <div class="col-md-4">
-        <h2>Done</h2>
+        <h2 class="text-center">Done</h2>
         {% for todo in all_todos: %}
             {% if todo.status == 'done' %}
-                <div class="card" style="width: 18rem;"">
+                <div class="card mb-3">
                     <div class=" card-body">
                         <a href="{{ url_for('show_todo', id=todo.id) }}">
                             <h5 class="card-title">{{todo.title}}</h5>
                         </a>
                         <p class="card-text">{{todo.body|safe}}</p>
-                        <a href="{{ url_for('change_status', id=todo.id, status='todo')}}" class="card-link">"To Do"</a>
-                        <a href="{{ url_for('change_status', id=todo.id, status='doing')}}" class="card-link">"Doing"</a>
+                    </div>
+                    <div class="card-footer text-body-secondary d-flex justify-content-between">
+                        <a href="{{ url_for('change_status', id=todo.id, status='todo')}}" class="icon-link icon-link-hover">
+                            {{ render_icon('arrow-left') }}To do
+                        </a>
+                        <a href="{{ url_for('change_status', id=todo.id, status='doing')}}" class="icon-link icon-link-hover">
+                            {{ render_icon('arrow-left') }}Doing
+                        </a>
                     </div>
                 </div>
             {% endif %}
