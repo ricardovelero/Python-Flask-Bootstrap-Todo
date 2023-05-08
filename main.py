@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateTimeLocalField, SubmitField
+from wtforms import StringField, DateTimeLocalField, SubmitField, HiddenField
 from wtforms.validators import DataRequired
 from flask_ckeditor import CKEditor, CKEditorField
 from flask_bootstrap import Bootstrap5
@@ -26,7 +26,7 @@ class ToDo(db.Model):
     body = db.Column(db.String(500), nullable=True)
     date = db.Column(db.String(100), nullable=True)
     # due_date = db.Column(db.String(100), nullable=True)
-    status = db.Column(db.String(100), default='To Do', nullable=False)
+    status = db.Column(db.String(6), default='todo', nullable=False)
 
     def __repr__(self):
         return '<ToDo %r>' % self.title
@@ -41,6 +41,7 @@ class CreateToDoForm(FlaskForm):
     title = StringField("Name", validators=[DataRequired()])
     body = CKEditorField("Description", validators=[DataRequired()])
     # due_date = DateTimeLocalField("Due Date")
+    status = HiddenField()
     submit = SubmitField("Save")
 
 
@@ -58,20 +59,20 @@ def show_todo(id):
 
 @app.route("/add_todo", methods=['GET', 'POST'])
 def add_todo():
-    form = CreateToDoForm()
+    status = request.args.get("status", default="todo", type=str)
+    form = CreateToDoForm(status=status)
     if form.validate_on_submit():
         print("Validated 👌")
         new_todo = ToDo(
             title=form.title.data,
             body=form.body.data,
             # due_date=form.due_date.data,
-            # status=form.status.data,
             date=datetime.datetime.now().strftime("%B %d, %Y")
         )
         db.session.add(new_todo)
         db.session.commit()
         return redirect(url_for('home'))
-    return render_template("make-todo.html", form=form)
+    return render_template("make-todo.html", form=form, todo='')
 
 
 @app.route("/edit_todo/<int:id>", methods=['GET', 'POST'])
@@ -87,6 +88,16 @@ def edit_todo(id):
         db.session.commit()
         return redirect(url_for('home'))
     return render_template("make-todo.html", form=form, todo=todo)
+
+
+@app.route("/change_status/<int:id>")
+def change_status(id):
+    todo = ToDo.query.get(id)
+    print(f"Orignal status {todo.status}")
+    todo.status = request.args.get("status", default="todo", type=str)
+    db.session.commit()
+    print(f"Changed to {todo.status}")
+    return redirect(url_for('home'))
 
 
 @app.route("/delete/<int:id>")
