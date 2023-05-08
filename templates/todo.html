@@ -6,6 +6,7 @@
         <h1>{{ todo.title }}</h1>
         <p>{{ todo.body|safe }}</p>
         <p>Created date: {{todo.date}}</p>
+        <p>Status: {{todo.status}}</p>
         <a 
         href="{{ url_for('edit_todo', id=todo.id) }}"
         class="btn btn-primary"
